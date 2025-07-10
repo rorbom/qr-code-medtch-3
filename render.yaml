@@ -1,0 +1,21 @@
+services:
+  - type: web
+    name: medical-emergency-profile
+    env: python
+    buildCommand: "./build.sh"
+    startCommand: "gunicorn --bind 0.0.0.0:$PORT app:app"
+    envVars:
+      - key: SESSION_SECRET
+        generateValue: true
+      - key: DATABASE_URL
+        fromDatabase:
+          name: medical-profiles-db
+          property: connectionString
+      - key: PYTHON_VERSION
+        value: "3.11"
+
+databases:
+  - name: medical-profiles-db
+    databaseName: medical_profiles
+    user: medical_user
+
